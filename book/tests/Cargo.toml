@@ -7,8 +7,8 @@ edition = "2021"
 
 [dependencies]
 async-trait = "0.1"
-skeptic = "0.13"
+skeptic = { path = "../../rust-skeptic/skeptic" }
 skeptic-mre = { path = "../.." }
 
 [build-dependencies]
-skeptic = "0.13"
+skeptic = { path = "../../rust-skeptic/skeptic" }
