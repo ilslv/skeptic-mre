@@ -140,6 +140,16 @@ fn get_rlib_dependencies(root_dir: PathBuf, target_dir: PathBuf) -> Result<Vec<F
         LockedDeps::from_path(root_dir)
     })?;
 
+    let paths = WalkDir::new(target_dir.clone())
+        .max_depth(5)
+        .into_iter()
+        .filter_map(|entry| entry.map(|e| e.into_path().to_str().map(|s| s.to_string())).ok().flatten())
+        .fold(String::new(), |mut acc, entry| {
+            acc.push_str(&entry);
+            acc.push('\n');
+            acc
+        });
+
     let fingerprint_dir = target_dir.join(".fingerprint/");
     let locked_deps: HashMap<String, String> = lock.collect();
     let mut found_deps: HashMap<String, Fingerprint> = HashMap::new();
@@ -177,7 +187,7 @@ fn get_rlib_dependencies(root_dir: PathBuf, target_dir: PathBuf) -> Result<Vec<F
         .filter_map(|(_, val)| if val.rlib.exists() { Some(val) } else { None })
         .collect();
 
-    panic!("locked_deps: {:#?}\nfound_deps: {:#?}", locked_deps, found_deps);
+    panic!("locked_deps: {:#?}\nfound_deps: {:#?}\npaths: {}", locked_deps, found_deps, paths);
 
     Ok(found_deps)
 }
