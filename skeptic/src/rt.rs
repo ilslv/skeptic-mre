@@ -191,7 +191,7 @@ fn get_rlib_dependencies(root_dir: PathBuf, target_dir: PathBuf) -> Result<Vec<F
         .filter_map(|(_, val)| if val.rlib.exists() { Some(val) } else { None })
         .collect();
 
-    panic!("locked_deps: {:#?}\nfound_deps: {:#?}\npaths: {}\nfingerprints: {}", locked_deps, found_deps, paths, fingerprints);
+    // panic!("locked_deps: {:#?}\nfound_deps: {:#?}\npaths: {}\nfingerprints: {}", locked_deps, found_deps, paths, fingerprints);
 
     Ok(found_deps)
 }
