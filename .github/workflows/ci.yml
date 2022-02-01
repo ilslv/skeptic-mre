@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  RUST_BACKTRACE: 1
+
+jobs:
+  test-book:
+    name: Test Book
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu
+          - macOS
+          - windows
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --manifest-path book/tests/Cargo.toml
